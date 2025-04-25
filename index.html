@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Moins de plastique, plus de futur</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f9f4;
+      color: #2c3e50;
+    }
+    header {
+      background-color: #1E4D45;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0.3rem;
+    }
+    .hero img {
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      max-height: 550px;
+    }
+    .content {
+      max-width: 800px;
+      margin: auto;
+      padding: 1rem;
+      text-align: center;
+    }
+    .content h2 {
+      color: #1E4D45;
+    }
+    .cta {
+      background-color: #e8f5e9;
+      padding: 2rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+    }
+    .cta input, .cta button {
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      width: 100%;
+      max-width: 400px;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .cta input {
+      background: #fff;
+      border: 1px solid #ccc;
+    }
+    .cta button {
+      background-color: #1E4D45;
+      color: white;
+      cursor: pointer;
+    }
+    footer {
+      background-color: #1E4D45;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Moins de plastique, plus de futur</h1>
+  </header>
+
+  <section class="hero">
+    <img src="affiche.png" alt="Affiche moins de plastique, plus de futur">
+  </section>
+
+  <section class="content">
+    <h2>Pourquoi agir ?</h2>
+    <p>Chaque année, 8 millions de tonnes de plastique finissent dans nos océans. En réduisant notre consommation, nous pouvons préserver la vie marine et construire un avenir plus propre.</p>
+    
+    <h2>Comment contribuer ?</h2>
+    <ul style="text-align: left; display: inline-block;">
+      <li>Utilisez des sacs réutilisables</li>
+      <li>Privilégiez le vrac et les produits sans emballages</li>
+      <li>Sensibilisez vos proches à la cause</li>
+    </ul>
+  </section>
+
+  
+<section class="quiz">
+  <h2>🌍 Petit quiz pour sauver la planète</h2>
+  <p>Testez vos connaissances sur le plastique !</p>
+  <div id="quiz-container">
+    <p id="question">Chargement...</p>
+    <div id="answers"></div>
+    <p id="feedback" style="font-weight: bold; margin-top: 1rem;"></p>
+    <button id="next-btn" style="display:none; margin-top:1rem;" onclick="nextQuestion()">Question suivante</button>
+  </div>
+</section>
+
+<script>
+  const questions = [
+    {
+      text: "Combien de temps un sac plastique met-il à se décomposer ?",
+      answers: [
+        { text: "10 ans", correct: false },
+        { text: "400 ans", correct: true },
+        { text: "50 ans", correct: false }
+      ]
+    },
+    {
+      text: "Quel est le principal danger du plastique pour la faune marine ?",
+      answers: [
+        { text: "Il est trop coloré", correct: false },
+        { text: "Il ressemble à de la nourriture", correct: true },
+        { text: "Il fond dans l’eau", correct: false }
+      ]
+    },
+    {
+      text: "Lequel de ces objets est le plus souvent retrouvé dans les océans ?",
+      answers: [
+        { text: "Bouteilles en verre", correct: false },
+        { text: "Pailles en plastique", correct: true },
+        { text: "Boîtes en carton", correct: false }
+      ]
+    }
+  ];
+
+  let currentQuestionIndex = 0;
+
+  function showQuestion() {
+    const questionEl = document.getElementById("question");
+    const answersEl = document.getElementById("answers");
+    const feedback = document.getElementById("feedback");
+    const nextBtn = document.getElementById("next-btn");
+    feedback.textContent = "";
+    nextBtn.style.display = "none";
+
+    const q = questions[currentQuestionIndex];
+    questionEl.textContent = q.text;
+    answersEl.innerHTML = "";
+
+    q.answers.forEach((answer, i) => {
+      const btn = document.createElement("button");
+      btn.textContent = answer.text;
+      btn.onclick = () => checkAnswer(btn, answer.correct, btn);
+      answersEl.appendChild(btn);
+    });
+  }
+
+  function checkAnswer(button, isCorrect, clickedBtn) {
+    const feedback = document.getElementById("feedback");
+    const nextBtn = document.getElementById("next-btn");
+    if (isCorrect) {
+      feedback.textContent = "✅ Bravo ! C’est la bonne réponse.";
+      feedback.style.color = "green";
+    } else {
+      feedback.textContent = "❌ Oups ! Essayez encore.";
+      feedback.style.color = "red";
+    }
+
+    // Désactiver tous les boutons après réponse
+    const buttons = document.querySelectorAll("#answers button");
+    
+    if (isCorrect) {
+      buttons.forEach(btn => btn.disabled = true);
+      nextBtn.style.display = "inline-block";
+    } else {
+      clickedBtn.disabled = true;
+    }
+    
+
+    nextBtn.style.display = "inline-block";
+  }
+
+  function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+      showQuestion();
+    } else {
+      const quizContainer = document.getElementById("quiz-container");
+      quizContainer.innerHTML = "<p><strong>🎉 Félicitations ! Vous avez terminé le quiz.</strong></p>";
+    }
+  }
+
+  // Démarrer le quiz à l’affichage
+  document.addEventListener("DOMContentLoaded", showQuestion);
+</script>
+
+<style>
+  .quiz {
+    background-color: #d6f5e3;
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 700px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .quiz button {
+    margin: 0.5rem;
+    padding: 0.75rem 1.2rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #1E4D45;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  .quiz button:hover {
+    background-color: #14523b;
+  }
+</style>
+
+<section class="cta">
+    <h2>Engagez-vous dès aujourd’hui !</h2>
+    <p>Laissez votre e-mail pour recevoir notre guide anti-plastique et participer à des défis écologiques.</p>
+    <form>
+      <button type="submit">Je m’engage 🌱</button>
+    </form>
+  </section>
+
+  <footer>
+    © 2025 Hackathon – Tous droits réservés
+  </footer>
+</body>
+</html>
